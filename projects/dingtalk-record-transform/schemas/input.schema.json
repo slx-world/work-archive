@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "钉钉记录列表输入格式",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "fields": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "公司名": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "企业用户名": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "企业密码": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "店铺": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "站点": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "运营负责人": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "object",
+              "properties": {
+                "unionId": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "name": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "additionalProperties": true
+  },
+  "$comment": "非空 fields 必须包含非空白公司名；此条件及动态键冲突由转换代码额外校验。"
+}

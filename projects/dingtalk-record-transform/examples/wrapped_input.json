@@ -1,0 +1,254 @@
+{
+  "data": {
+    "records": [
+      {
+        "id": "demo_record_示例医疗店",
+        "fields": {
+          "公司名": "示例医疗公司",
+          "企业用户名": "demo_medical",
+          "企业密码": "DemoOnly}|#2026",
+          "店铺": "示例医疗店",
+          "站点": [
+            {
+              "name": "美国",
+              "id": "demo_site_0"
+            },
+            {
+              "name": "加拿大",
+              "id": "demo_site_1"
+            },
+            {
+              "name": "墨西哥",
+              "id": "demo_site_2"
+            }
+          ],
+          "运营负责人": [
+            {
+              "unionId": "demo_u01",
+              "name": "负责人甲"
+            }
+          ]
+        }
+      },
+      {
+        "id": "demo_record_示例深圳店",
+        "fields": {
+          "公司名": "示例制造公司",
+          "企业用户名": "demo_factory",
+          "企业密码": "DemoOnly}|#2026",
+          "店铺": "示例深圳店",
+          "站点": [
+            {
+              "name": "美国",
+              "id": "demo_site_0"
+            },
+            {
+              "name": "加拿大",
+              "id": "demo_site_1"
+            },
+            {
+              "name": "墨西哥",
+              "id": "demo_site_2"
+            }
+          ],
+          "运营负责人": [
+            {
+              "unionId": "demo_u02",
+              "name": "负责人乙"
+            }
+          ]
+        }
+      },
+      {
+        "id": "demo_record_示例惠州店",
+        "fields": {
+          "公司名": "示例制造公司",
+          "企业用户名": "demo_factory",
+          "企业密码": "DemoOnly}|#2026",
+          "店铺": "示例惠州店",
+          "站点": [
+            {
+              "name": "美国",
+              "id": "demo_site_0"
+            },
+            {
+              "name": "加拿大",
+              "id": "demo_site_1"
+            },
+            {
+              "name": "墨西哥",
+              "id": "demo_site_2"
+            },
+            {
+              "name": "日本",
+              "id": "demo_site_3"
+            }
+          ],
+          "运营负责人": [
+            {
+              "unionId": "demo_u03",
+              "name": "负责人丙"
+            }
+          ]
+        }
+      },
+      {
+        "id": "demo_record_示例材料店",
+        "fields": {
+          "公司名": "示例材料公司",
+          "企业用户名": "demo_material",
+          "企业密码": "DemoOnly}|#2026",
+          "店铺": "示例材料店",
+          "站点": [
+            {
+              "name": "美国",
+              "id": "demo_site_0"
+            },
+            {
+              "name": "加拿大",
+              "id": "demo_site_1"
+            },
+            {
+              "name": "墨西哥",
+              "id": "demo_site_2"
+            }
+          ],
+          "运营负责人": [
+            {
+              "unionId": "demo_u04",
+              "name": "负责人丁"
+            }
+          ]
+        }
+      },
+      {
+        "id": "demo_record_示例护理店",
+        "fields": {
+          "公司名": "示例护理公司",
+          "企业用户名": "demo_care",
+          "企业密码": "DemoOnly}|#2026",
+          "店铺": "示例护理店",
+          "站点": [
+            {
+              "name": "美国",
+              "id": "demo_site_0"
+            },
+            {
+              "name": "加拿大",
+              "id": "demo_site_1"
+            },
+            {
+              "name": "墨西哥",
+              "id": "demo_site_2"
+            }
+          ],
+          "运营负责人": [
+            {
+              "unionId": "demo_u05",
+              "name": "负责人戊"
+            }
+          ]
+        }
+      },
+      {
+        "id": "demo_record_示例科技一店",
+        "fields": {
+          "公司名": "示例科技公司",
+          "企业用户名": "demo_tech",
+          "企业密码": "DemoOnly}|#2026",
+          "店铺": "示例科技一店",
+          "站点": [
+            {
+              "name": "美国",
+              "id": "demo_site_0"
+            },
+            {
+              "name": "加拿大",
+              "id": "demo_site_1"
+            },
+            {
+              "name": "墨西哥",
+              "id": "demo_site_2"
+            }
+          ],
+          "运营负责人": [
+            {
+              "unionId": "demo_u06",
+              "name": "负责人己"
+            },
+            {
+              "unionId": "demo_u07",
+              "name": "负责人庚"
+            }
+          ]
+        }
+      },
+      {
+        "id": "demo_record_示例科技二店",
+        "fields": {
+          "公司名": "示例科技公司",
+          "企业用户名": "demo_tech",
+          "企业密码": "DemoOnly}|#2026",
+          "店铺": "示例科技二店",
+          "站点": [
+            {
+              "name": "美国",
+              "id": "demo_site_0"
+            },
+            {
+              "name": "加拿大",
+              "id": "demo_site_1"
+            },
+            {
+              "name": "墨西哥",
+              "id": "demo_site_2"
+            }
+          ],
+          "运营负责人": [
+            {
+              "unionId": "demo_u08",
+              "name": "负责人辛"
+            }
+          ]
+        }
+      },
+      {
+        "id": "demo_record_示例医疗店",
+        "fields": {
+          "公司名": "示例医疗公司",
+          "企业用户名": "demo_medical",
+          "企业密码": "DemoOnly}|#2026",
+          "店铺": "示例医疗店",
+          "站点": [
+            {
+              "name": "美国",
+              "id": "demo_site_0"
+            },
+            {
+              "name": "加拿大",
+              "id": "demo_site_1"
+            },
+            {
+              "name": "墨西哥",
+              "id": "demo_site_2"
+            }
+          ],
+          "运营负责人": [
+            {
+              "unionId": "demo_u01",
+              "name": "负责人甲"
+            }
+          ]
+        }
+      },
+      {
+        "id": "demo_empty_01",
+        "fields": {}
+      },
+      {
+        "id": "demo_empty_02",
+        "fields": null
+      }
+    ]
+  }
+}

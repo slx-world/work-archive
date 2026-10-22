@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "公司和店铺转换结果格式",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "公司名",
+      "企业用户名",
+      "企业密码"
+    ],
+    "minProperties": 4,
+    "properties": {
+      "公司名": {
+        "type": "string"
+      },
+      "企业用户名": {
+        "type": "string"
+      },
+      "企业密码": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": {
+      "type": "object",
+      "required": [
+        "站点",
+        "unionId",
+        "name"
+      ],
+      "properties": {
+        "站点": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unionId": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "name": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$comment": "unionId 和 name 列表必须等长、按下标对应；此约束由转换代码和测试验证。"
+}

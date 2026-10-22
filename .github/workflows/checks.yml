@@ -1,0 +1,22 @@
+name: Code and privacy checks
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Scan tracked files
+        run: python scripts/privacy_gate.py --all
+      - name: Scan reachable history
+        run: python scripts/privacy_gate.py --history
+      - name: Test DingTalk transformation
+        run: python -m unittest discover -s projects/dingtalk-record-transform -v
+      - name: Test privacy gate
+        run: python -m unittest discover -s scripts -p 'test_*.py' -v
