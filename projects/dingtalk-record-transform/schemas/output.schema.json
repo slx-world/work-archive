@@ -1,15 +1,19 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "公司和店铺转换结果格式",
+  "title": "钉钉记录逐条平铺输出格式",
   "type": "array",
+  "uniqueItems": false,
   "items": {
     "type": "object",
     "required": [
       "公司名",
       "企业用户名",
-      "企业密码"
+      "企业密码",
+      "店铺",
+      "站点",
+      "unionId",
+      "name"
     ],
-    "minProperties": 4,
     "properties": {
       "公司名": {
         "type": "string"
@@ -19,37 +23,33 @@
       },
       "企业密码": {
         "type": "string"
+      },
+      "店铺": {
+        "type": "string"
+      },
+      "站点": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "uniqueItems": false
+      },
+      "unionId": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "uniqueItems": false
+      },
+      "name": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "uniqueItems": false
       }
     },
-    "additionalProperties": {
-      "type": "object",
-      "required": [
-        "站点",
-        "unionId",
-        "name"
-      ],
-      "properties": {
-        "站点": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "unionId": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "name": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "additionalProperties": false
-    }
+    "additionalProperties": false
   },
-  "$comment": "unionId 和 name 列表必须等长、按下标对应；此约束由转换代码和测试验证。"
+  "$comment": "每条非空 fields 记录对应一条输出；不合并、不去重。unionId 与 name 长度相等且按下标对应，此关系由代码和测试额外保证。"
 }

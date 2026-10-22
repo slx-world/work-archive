@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 import unittest
 
-from dingtalk_transform import extract_records, main, transform
+from dingtalk_transform import extract_records, main, transform, transform_records
 
 
 def row(**updates):
@@ -21,7 +21,10 @@ class TransformTests(unittest.TestCase):
     def test_single(self):
         data = transform([row()])[0]
         self.assertEqual(data["企业密码"], " Demo}|# ")
-        self.assertEqual(data["示例店铺"], {"站点": ["美国"], "unionId": ["demo_u1"], "name": ["负责人甲"]})
+        self.assertEqual(data, {
+            "公司名": "示例公司", "企业用户名": "demo", "企业密码": " Demo}|# ",
+            "店铺": "示例店铺", "站点": ["美国"], "unionId": ["demo_u1"], "name": ["负责人甲"],
+        })
 
     def test_empty(self):
         self.assertEqual(transform([]), [])
@@ -31,8 +34,8 @@ class TransformTests(unittest.TestCase):
 
     def test_multiple_shops(self):
         data = transform([row(), row(店铺="店铺乙")])
-        self.assertEqual(len(data), 1)
-        self.assertIn("店铺乙", data[0])
+        self.assertEqual(len(data), 2)
+        self.assertEqual([item["店铺"] for item in data], ["示例店铺", "店铺乙"])
 
     def test_company_separation(self):
         self.assertEqual(len(transform([row(), row(公司名="另一公司")])), 2)
@@ -47,36 +50,58 @@ class TransformTests(unittest.TestCase):
         password = "  Demo\n}|#\t  "
         self.assertEqual(transform([row(企业密码=password)])[0]["企业密码"], password)
 
-    def test_merge_and_order(self):
+    def test_preserve_record_and_site_order(self):
         data = transform([row(), row(站点=[{"name": "日本"}, {"name": "美国"}])])
-        self.assertEqual(data[0]["示例店铺"]["站点"], ["美国", "日本"])
+        self.assertEqual(len(data), 2)
+        self.assertEqual(data[0]["站点"], ["美国"])
+        self.assertEqual(data[1]["站点"], ["日本", "美国"])
 
     def test_duplicate_people(self):
-        data = transform([row(), row()])[0]["示例店铺"]
-        self.assertEqual(data["unionId"], ["demo_u1"])
+        person = {"unionId": "demo_u1", "name": "负责人甲"}
+        data = transform([row(运营负责人=[person, person])])[0]
+        self.assertEqual(data["unionId"], ["demo_u1", "demo_u1"])
+        self.assertEqual(data["name"], ["负责人甲", "负责人甲"])
+
+    def test_duplicate_records_preserved(self):
+        data = transform([row(), row()])
+        self.assertEqual(len(data), 2)
+        self.assertEqual(data[0], data[1])
+        self.assertIsNot(data[0], data[1])
+        data[0]["站点"].append("日本")
+        self.assertEqual(data[1]["站点"], ["美国"])
+
+    def test_duplicate_sites_and_missing_names_preserved(self):
+        data = transform([row(站点=[{"name": "美国"}, {"name": "美国"}, {}, {"name": None}])])[0]
+        self.assertEqual(data["站点"], ["美国", "美国", "", ""])
+
+    def test_transform_records_entry(self):
+        self.assertEqual(transform_records([row()]), transform([row()]))
 
     def test_changed_person_name(self):
         people = [{"unionId": "demo_u1", "name": "负责人甲"}, {"unionId": "demo_u1", "name": "新名称"}]
-        data = transform([row(运营负责人=people)])[0]["示例店铺"]
+        data = transform([row(运营负责人=people)])[0]
         self.assertEqual(data["unionId"], ["demo_u1", "demo_u1"])
         self.assertEqual(data["name"], ["负责人甲", "新名称"])
 
     def test_partial_people(self):
         people = [{}, {"unionId": "demo_u2"}, {"name": "负责人乙"}]
-        data = transform([row(运营负责人=people)])[0]["示例店铺"]
-        self.assertEqual(data["unionId"], ["demo_u2", ""])
-        self.assertEqual(data["name"], ["", "负责人乙"])
+        data = transform([row(运营负责人=people)])[0]
+        self.assertEqual(data["unionId"], ["", "demo_u2", ""])
+        self.assertEqual(data["name"], ["", "", "负责人乙"])
 
     def test_missing_optional(self):
         data = transform([{"fields": {"公司名": "示例公司"}}])[0]
         self.assertEqual(data["企业用户名"], "")
         self.assertEqual(data["企业密码"], "")
-        self.assertEqual(data["示例公司"], {"站点": [], "unionId": [], "name": []})
+        self.assertEqual(data["店铺"], "示例公司")
+        self.assertEqual(data["站点"], [])
+        self.assertEqual(data["unionId"], [])
+        self.assertEqual(data["name"], [])
 
     def test_null_optional(self):
         data = transform([row(企业用户名=None, 企业密码=None, 站点=None, 运营负责人=None)])[0]
         self.assertEqual(data["企业密码"], "")
-        self.assertEqual(data["示例店铺"]["站点"], [])
+        self.assertEqual(data["站点"], [])
 
     def test_input_unchanged(self):
         data = [row()]
@@ -114,10 +139,42 @@ class TransformTests(unittest.TestCase):
             with self.subTest(updates=updates), self.assertRaises(TypeError):
                 transform([row(**updates)])
 
-    def test_reserved_shop(self):
-        for name in ("公司名", "企业用户名", "企业密码"):
-            with self.subTest(name=name), self.assertRaises(ValueError):
-                transform([row(店铺=name)])
+    def test_shop_matching_field_name(self):
+        for name in ("公司名", "企业用户名", "企业密码", "店铺", "站点", "name", "unionId"):
+            with self.subTest(name=name):
+                data = transform([row(店铺=name)])[0]
+                self.assertEqual(data["店铺"], name)
+                self.assertEqual(data["公司名"], "示例公司")
+                self.assertEqual(data["站点"], ["美国"])
+
+    def test_shop_data_isolation(self):
+        data = transform([row(), row(店铺="示例乙店", 站点=[{"name": "日本"}],
+                                    运营负责人=[{"unionId": "demo_u2", "name": "负责人乙"}])])
+        self.assertEqual(data[0]["站点"], ["美国"])
+        self.assertEqual(data[1]["站点"], ["日本"])
+        self.assertEqual(data[0]["unionId"], ["demo_u1"])
+        self.assertEqual(data[1]["unionId"], ["demo_u2"])
+        data[0]["站点"].append("加拿大")
+        self.assertEqual(data[1]["站点"], ["日本"])
+
+    def test_flat_output_contract(self):
+        data = transform([row()])[0]
+        self.assertEqual(set(data), {"公司名", "企业用户名", "企业密码", "店铺", "站点", "unionId", "name"})
+        self.assertFalse(any(isinstance(value, dict) for value in data.values()))
+
+    def test_shop_fallback_variants(self):
+        data = transform([row(店铺=None), row(店铺="")])
+        self.assertEqual(len(data), 2)
+        self.assertEqual(data[0]["店铺"], "示例公司")
+        self.assertEqual(data[1]["店铺"], "示例公司")
+
+    def test_output_schema_fields(self):
+        base = Path(__file__).parent
+        schema = json.loads((base / "schemas" / "output.schema.json").read_text(encoding="utf-8"))
+        keys = {"公司名", "企业用户名", "企业密码", "店铺", "站点", "unionId", "name"}
+        self.assertEqual(set(schema["items"]["required"]), keys)
+        self.assertEqual(set(schema["items"]["properties"]), keys)
+        self.assertIs(schema["items"]["additionalProperties"], False)
 
     def test_blank_names(self):
         for updates in ({"公司名": " "}, {"店铺": " "}):
@@ -144,8 +201,12 @@ class TransformTests(unittest.TestCase):
         source = json.loads((base / "input.json").read_text(encoding="utf-8"))
         expected = json.loads((base / "output.json").read_text(encoding="utf-8"))
         self.assertEqual(transform(source), expected)
-        self.assertEqual(len(expected), 5)
-        self.assertEqual(sum(len(x) - 3 for x in expected), 7)
+        self.assertEqual(len(expected), 8)
+        self.assertEqual(expected[0], expected[-1])
+        for item in expected:
+            self.assertEqual(len(item["unionId"]), len(item["name"]))
+        wrapped = json.loads((base / "main_output.json").read_text(encoding="utf-8"))
+        self.assertEqual(main(source), wrapped)
 
 
 if __name__ == "__main__":

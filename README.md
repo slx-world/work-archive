@@ -6,7 +6,7 @@
 
 | 项目 | 内容 |
 | --- | --- |
-| [钉钉多行记录转换](projects/dingtalk-record-transform/) | Python 转换代码、JSON 输入输出示例、数据格式定义、Word 和 TXT 使用说明、验收测试 |
+| [钉钉多行记录转换](projects/dingtalk-record-transform/) | 每条有效原始记录对应一条平铺记录，含 Python 代码、脱敏 JSON 示例、格式定义、Word 和 TXT 说明、验收测试 |
 
 ## 目录约定
 

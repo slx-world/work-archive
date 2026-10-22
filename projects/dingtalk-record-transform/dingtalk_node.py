@@ -1,7 +1,8 @@
 """钉钉记录转换。无第三方依赖，无打印，无网络请求，不修改输入。
 
-transform(records) -> 公司列表
-main(iPaas_result) -> {"result": 公司列表}
+transform_records(records) -> 每条有效原始记录对应一条平铺记录
+transform(records) -> transform_records 的兼容入口
+main(iPaas_result) -> {"result": 平铺记录列表}
 """
 
 
@@ -41,17 +42,14 @@ def extract_records(payload, records_path=None):
     return payload
 
 
-def transform(records):
-    """按公司名、用户名、密码分组，再按店铺合并站点与负责人。
+def transform_records(records):
+    """逐条展开记录，不按公司或店铺合并，不去重，不修改输入。
 
     缺失或 null 的用户名、密码输出为空字符串。非空字符串原样保留。
     非法结构立即报错；错误仅包含字段位置，不包含账号密码值。
     """
     records = extract_records(records)
-    groups = {}
-    seen_sites = {}
-    seen_people = {}
-    reserved = {"公司名", "企业用户名", "企业密码"}
+    result = []
 
     for index, record in enumerate(records):
         location = "records[" + str(index) + "]"
@@ -74,21 +72,13 @@ def transform(records):
         shop = _text(fields.get("店铺"), prefix + "店铺") or company
         if not shop.strip():
             raise ValueError(prefix + "店铺不能只包含空白字符")
-        if shop in reserved:
-            raise ValueError(prefix + "店铺与输出保留字段重名，无法使用动态店铺键")
-
-        key = (company, username, password)
-        company_data = groups.setdefault(key, {
+        output_record = {
             "公司名": company,
             "企业用户名": username,
             "企业密码": password,
-        })
-        shop_data = company_data.setdefault(shop, {
+            "店铺": shop,
             "站点": [], "unionId": [], "name": [],
-        })
-        shop_key = (key, shop)
-        site_set = seen_sites.setdefault(shop_key, set())
-        people_set = seen_people.setdefault(shop_key, set())
+        }
 
         sites = _items(fields.get("站点"), prefix + "站点")
         for site_index, site in enumerate(sites):
@@ -96,9 +86,7 @@ def transform(records):
             if not isinstance(site, dict):
                 raise TypeError(site_location + " 必须是对象")
             name = _text(site.get("name"), site_location + ".name")
-            if name and name not in site_set:
-                shop_data["站点"].append(name)
-                site_set.add(name)
+            output_record["站点"].append(name)
 
         people = _items(fields.get("运营负责人"), prefix + "运营负责人")
         for person_index, person in enumerate(people):
@@ -107,13 +95,17 @@ def transform(records):
                 raise TypeError(person_location + " 必须是对象")
             union_id = _text(person.get("unionId"), person_location + ".unionId")
             name = _text(person.get("name"), person_location + ".name")
-            pair = (union_id, name)
-            if pair != ("", "") and pair not in people_set:
-                shop_data["unionId"].append(union_id)
-                shop_data["name"].append(name)
-                people_set.add(pair)
+            output_record["unionId"].append(union_id)
+            output_record["name"].append(name)
 
-    return list(groups.values())
+        result.append(output_record)
+
+    return result
+
+
+def transform(records):
+    """兼容现有调用名称，返回同样的逐条平铺结果。"""
+    return transform_records(records)
 
 
 def main(iPaas_result):
@@ -121,5 +113,5 @@ def main(iPaas_result):
     return {"result": transform(iPaas_result)}
 
 
-# 直接执行式代码节点：先绑定名为 iPaas_result 的列表输入。
-result = transform(iPaas_result)
+# 直接执行式节点：输入参数 iPaas_result 绑定原始记录列表。
+result = transform_records(iPaas_result)
