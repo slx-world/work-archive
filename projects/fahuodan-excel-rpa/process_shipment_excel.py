@@ -176,7 +176,7 @@ def _write_clean_workbook(
     headers: Sequence,
     rows: Sequence[Sequence],
     sheet_title: str = "发货单详情",
-    source_ws: Optional[Worksheet] = None,
+    source_ws: Optional[Worksheet] = None
 ) -> Workbook:
     wb = Workbook()
     ws = wb.active
@@ -202,7 +202,7 @@ def process_excel(
     column_names: Union[str, Sequence[str]],
     output_name: str,
     sheet_name: Optional[str] = None,
-    dedupe: bool = True,
+    dedupe: bool = True
 ) -> str:
     """
     发货单 Excel：取消合并、指定列向下填充、可选整行去重后另存
@@ -286,7 +286,7 @@ def main(
     column_names: str = DEFAULT_FILL_COLUMNS,
     output_name: str = "发货单_已处理.xlsx",
     sheet_name: Optional[str] = None,
-    dedupe=True,
+    dedupe=True
 ) -> str:
     """
     影刀指令主入口

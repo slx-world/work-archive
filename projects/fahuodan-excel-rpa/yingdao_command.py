@@ -27,7 +27,7 @@ def execute(
     column_names: str = DEFAULT_FILL_COLUMNS,
     output_name: str = "发货单_已处理.xlsx",
     sheet_name=None,
-    dedupe=True,
+    dedupe=True
 ) -> str:
     """
     影刀指令执行函数
