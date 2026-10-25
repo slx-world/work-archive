@@ -7,11 +7,10 @@ GitHub 不能直接预览 .xlsx（二进制），因此额外生成：
 - 源表示例还可生成 Markdown（含合并区域说明）
 """
 
-from __future__ import annotations
-
 import csv
 import sys
 from pathlib import Path
+from typing import Optional
 
 from openpyxl import load_workbook
 
@@ -22,7 +21,7 @@ def _cell_text(value) -> str:
     return str(value)
 
 
-def export_csv(xlsx_path: Path, csv_path: Path | None = None) -> Path:
+def export_csv(xlsx_path: Path, csv_path: Optional[Path] = None) -> Path:
     src = Path(xlsx_path)
     dest = Path(csv_path) if csv_path else src.with_name(src.stem + "_预览.csv")
 
@@ -40,7 +39,7 @@ def export_csv(xlsx_path: Path, csv_path: Path | None = None) -> Path:
     return dest.resolve()
 
 
-def export_source_markdown(xlsx_path: Path, md_path: Path | None = None) -> Path:
+def export_source_markdown(xlsx_path: Path, md_path: Optional[Path] = None) -> Path:
     """源表 Markdown 预览：空白格对应合并区，并列出合并范围。"""
     src = Path(xlsx_path)
     dest = Path(md_path) if md_path else src.with_name(src.stem + "_预览.md")
@@ -98,7 +97,7 @@ def export_source_markdown(xlsx_path: Path, md_path: Path | None = None) -> Path
     return dest.resolve()
 
 
-def export_all_samples(project_root: Path | None = None) -> None:
+def export_all_samples(project_root: Optional[Path] = None) -> None:
     root = Path(project_root) if project_root else Path(__file__).resolve().parents[1]
     src = root / "data" / "examples" / "发货单-示例-含合并单元格.xlsx"
     out = root / "data" / "processed" / "发货单-示例-已处理.xlsx"

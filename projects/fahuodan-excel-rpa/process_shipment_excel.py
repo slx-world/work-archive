@@ -14,9 +14,10 @@
 5. sheet_name 为空时取第一个工作表；dedupe 默认 True。
 
 样例数据见 data/examples/ 与 data/processed/。
-"""
 
-from __future__ import annotations
+注意：影刀「调用模块」会在文件前插入包装代码，因此本文件不能使用
+from __future__ import annotations（否则会报 must occur at the beginning）。
+"""
 
 import json
 import os
