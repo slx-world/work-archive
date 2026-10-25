@@ -7,6 +7,7 @@
 | 项目 | 内容 |
 | --- | --- |
 | [钉钉多行记录转换](projects/dingtalk-record-transform/) | 每条有效原始记录对应一条平铺记录，含 Python 代码、脱敏 JSON 示例、格式定义、Word 和 TXT 说明、验收测试 |
+| [发货单 Excel 规整](projects/fahuodan-excel-rpa/) | 取消合并单元格并向下填充，输出影刀可循环读取的扁平表；含 Python 指令、脱敏示例表、影刀与数据处理说明 |
 
 ## 目录约定
 

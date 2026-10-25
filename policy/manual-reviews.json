@@ -1,1 +1,14 @@
-{}
+{
+  "projects/fahuodan-excel-rpa/data/examples/发货单-示例-含合并单元格.xlsx": {
+    "sha256": "76b650ec992fc83ca6856ef0fb179e0d854086c3fb25ba40221f76f795ee14c6",
+    "redacted": true,
+    "reviewed_by": "reviewer-archive",
+    "reviewed_at": "2026-10-25"
+  },
+  "projects/fahuodan-excel-rpa/data/processed/发货单-示例-已处理.xlsx": {
+    "sha256": "6c1629dcc5b55bf7a33291256b85a5c14c1c9d70877cbcb5fc5d368a7b7d7c0c",
+    "redacted": true,
+    "reviewed_by": "reviewer-archive",
+    "reviewed_at": "2026-10-25"
+  }
+}
