@@ -10,5 +10,11 @@
     "redacted": true,
     "reviewed_by": "reviewer-archive",
     "reviewed_at": "2026-10-25"
+  },
+  "projects/dingtalk-at-text-rpa/data/影刀调用模块_参数与步骤.xlsx": {
+    "sha256": "87e5971146ec14351e944e24e9db14d6ed916bfaf44ee2ea546390edb7a919cd",
+    "redacted": true,
+    "reviewed_by": "reviewer-archive",
+    "reviewed_at": "2026-10-25"
   }
 }

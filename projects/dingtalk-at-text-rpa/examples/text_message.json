@@ -1,0 +1,12 @@
+{
+  "说明": "send_text_at 生成的 Text 消息体示例（虚构 userid）",
+  "msgtype": "text",
+  "text": {
+    "content": " @demo_u01 @demo_u02  \n  测试@人员效果"
+  },
+  "at": {
+    "atMobiles": [],
+    "atUserIds": ["demo_u01", "demo_u02"],
+    "isAtAll": false
+  }
+}

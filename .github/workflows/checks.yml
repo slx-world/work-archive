@@ -18,5 +18,7 @@ jobs:
         run: python scripts/privacy_gate.py --history
       - name: Test DingTalk transformation
         run: python -m unittest discover -s projects/dingtalk-record-transform -v
+      - name: Test DingTalk @ command
+        run: python -m unittest discover -s projects/dingtalk-at-text-rpa -v
       - name: Test privacy gate
         run: python -m unittest discover -s scripts -p 'test_*.py' -v
