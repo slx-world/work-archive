@@ -13,8 +13,8 @@ $Sheet = "发货单详情"
 $Result = python process_shipment_excel.py $Src $Cols $Out --sheet $Sheet
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-$Preview = python scripts/export_preview.py $Out
+python scripts/export_preview.py --all
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "已生成: $Result"
-Write-Host "预览:   $Preview"
+Write-Host "在线预览已更新（CSV / Markdown，GitHub 可直接打开）"

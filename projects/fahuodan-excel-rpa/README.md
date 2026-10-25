@@ -18,21 +18,34 @@ fahuodan-excel-rpa/
 ├── yingdao_command.py          # 影刀自定义指令模板
 ├── requirements.txt
 ├── data/
-│   ├── examples/发货单-示例-含合并单元格.xlsx
+│   ├── examples/
+│   │   ├── 发货单-示例-含合并单元格.xlsx
+│   │   ├── 发货单-示例-含合并单元格_预览.md   # GitHub 可在线看
+│   │   └── 发货单-示例-含合并单元格_预览.csv
 │   └── processed/
 │       ├── 发货单-示例-已处理.xlsx
-│       └── 发货单-示例-已处理_预览.csv
+│       └── 发货单-示例-已处理_预览.csv        # GitHub 可在线看
 ├── docs/
 │   ├── 影刀使用说明.md
 │   └── 数据处理说明.md
 └── scripts/
     ├── run_example.sh
     ├── run_example.ps1
-    └── export_preview.py      # 生成 CSV 预览
+    └── export_preview.py      # 生成 CSV / Markdown 预览
 ```
 
 示例数据已脱敏（虚构发货单号 / 货件单号 / 物流商），仅保留字段结构与合并形态。  
 工作表名：`发货单详情`。表头七列与上表一致。
+
+### 在线预览说明
+
+GitHub **不能**直接预览 `.xlsx`（只会显示 View raw / 下载）。请打开文本预览：
+
+| 文件 | 说明 |
+| --- | --- |
+| [源表 Markdown 预览](data/examples/发货单-示例-含合并单元格_预览.md) | 含空白格与合并区域列表 |
+| [源表 CSV 预览](data/examples/发货单-示例-含合并单元格_预览.csv) | 原始单元格值 |
+| [处理后 CSV 预览](data/processed/发货单-示例-已处理_预览.csv) | 规整去重后的结果 |
 
 ## 快速开始
 

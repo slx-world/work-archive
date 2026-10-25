@@ -15,7 +15,7 @@ RESULT="$(python3 process_shipment_excel.py \
   "$OUT" \
   --sheet "发货单详情")"
 
-PREVIEW="$(python3 scripts/export_preview.py "$OUT")"
+python3 scripts/export_preview.py --all
 
 echo "已生成: $RESULT"
-echo "预览:   $PREVIEW"
+echo "在线预览已更新（CSV / Markdown，GitHub 可直接打开）"
